@@ -12,8 +12,7 @@ var app = express();
 
 async function main() { 
   try {
-    await caconnection.enrollAdmin()
-    await hfHelper.connectNetwork();
+    
     const swagger = YAML.load('./swagger/swagger.yaml');        
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swagger))
     app.listen(9090);
