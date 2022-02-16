@@ -3,7 +3,6 @@ const hfConnection = require('../helpers/hfconnection');
 // peer chaincode invoke -C myc1 -n marbles -c '{"Args":["initMarble","marble2","red","50","tom"]}'
 async function createMarble(req, res) {
     try {
-        console.log(req)
         const name = req.body.name;
         const color = req.body.color;
         const size = req.body.size;
@@ -22,7 +21,7 @@ async function createMarble(req, res) {
 // peer chaincode query -C myc1 -n marbles -c '{"Args":["readMarble","marble1"]}'
 async function getMarble(req, res) {
     try {
-        const name = req.body.name;
+        const name = req.params.name;
         const network = hfConnection.getConnection();
         const contract = network.getContract(process.env.CHAINCODE_NAME);
         console.log(`Get Marble with params: ${name}`)
@@ -38,12 +37,14 @@ async function getMarble(req, res) {
 async function transferMarble(req, res) {
     try {
         const name = req.body.name;
+        const owner = req.body.owner;
+
         const network = hfConnection.getConnection();
         const contract = network.getContract(process.env.CHAINCODE_NAME);
-        console.log(`Transfer Marble with params: ${name},  ${newOwner}`)
-        await contract.submitTransaction("transferMarble", name, newOwner);
+        console.log(`Transfer Marble with params: ${name},  ${owner}`)
+        await contract.submitTransaction("transferMarble", name, owner);
         console.log(`Marble transferred successfully`);
-        res.send({ message: "Marble transferred to " + newOwner ` successfully` }).status(200);
+        res.send({ message: "Marble transferred to " + owner +` successfully` }).status(200);
     } catch (err) {
         console.log(err)
         res.send({ error: err.message }).status(500);

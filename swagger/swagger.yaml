@@ -41,6 +41,72 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
   
+  /marble/get:
+    x-swagger-router-controller: marble.controller
+    post:
+      summary: Gets a marble
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: MarbleCreate
+          description: The Smart Contract and method to call
+          schema:
+            $ref: "#/definitions/CreateMarble"
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GeneralResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      
+    
+  /marble/transfer:
+    x-swagger-router-controller: marble.controller
+    post:
+      summary: Transfer a marble
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: MarbleTransfer
+          description: The marble
+          schema:
+            $ref: "#/definitions/TransferMarble"
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GeneralResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /marble/delete:
+    x-swagger-router-controller: marble.controller
+    post:
+      summary: Deletes a marble
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: MarbleDelete
+          description: The marble
+          schema:
+            $ref: "#/definitions/Delete"
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GeneralResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  
 
 # complex objects have schema definitions
 definitions:
@@ -56,6 +122,24 @@ definitions:
       size:
         type: string
         example: small
+      owner:
+        type: string
+        example: Joe
+  TransferMarble:
+    type: object
+    properties:
+      name:
+        type: string
+        example: marble1
+      owner:
+        type: string
+        example: Joe
+  DeleteMarble:
+    type: object
+    properties:
+      name:
+        type: string
+        example: marble1
       owner:
         type: string
         example: Joe

@@ -12,12 +12,12 @@ const path = require('path');
 const ccpPath = path.resolve(__dirname, '../config/config.json');
 const ccpJSON = fs.readFileSync(ccpPath, 'utf8');
 const ccp = JSON.parse(ccpJSON);
-
+let ca, wallet;
 function connectCA() {
     // Create a new CA client for interacting with the CA.
     const caInfo = ccp.certificateAuthorities['ca.org1.uem.com'];
     const caTLSCACerts = caInfo.tlsCACerts.pem;
-    const ca = new FabricCAServices(caInfo.url, {
+    ca = new FabricCAServices(caInfo.url, {
         trustedRoots: caTLSCACerts,
         verify: false
     }, caInfo.caName);
@@ -25,16 +25,20 @@ function connectCA() {
 
 }
 
+function getCA() {
+    return ca;
+}
+
 async function configureFileSystemWallet(){
     const walletPath = '/tmp/hfnode/wallet';
-    const wallet = await Wallets.newFileSystemWallet(walletPath);
+    wallet = await Wallets.newFileSystemWallet(walletPath);
     return wallet;
 }
 
 async function enrollAdmin() {
     try {
         const ca = connectCA();
-        const wallet = await configureFileSystemWallet();
+        wallet = await configureFileSystemWallet();
 
         // Check to see if we've already enrolled the admin user.
         const adminExists = await wallet.get('adminCA');
@@ -66,5 +70,7 @@ async function enrollAdmin() {
 
 
 module.exports = {
-    enrollAdmin
+    enrollAdmin,
+    getCA,
+    configureFileSystemWallet
 }
