@@ -1,0 +1,188 @@
+{
+    "version": "1.0.0",
+    "client": {
+        "organization": "org1",
+        "logging": {
+            "level": "debug"
+        },
+        "peer": {
+            "timeout": {
+                "connection": "15s",
+                "response": "180s",
+                "discovery": {
+                    "greylistExpiry": "10s"
+                }
+            }
+        },
+        "orderer": {
+            "timeout": {
+                "connection": "15s",
+                "response": "15s"
+            }
+        },
+        "global": {
+            "timeout": {
+                "query": "180s",
+                "execute": "180s",
+                "resmgmt": "180s"
+            },
+            "cache": {
+                "connectionIdle": "30s",
+                "eventServiceIdle": "2m",
+                "channelConfig": "30m",
+                "channelMembership": "30s",
+                "discovery": "10s",
+                "selection": "10m"
+            }
+        },
+        "cryptoconfig": {
+            "path": "/Users/mtng/git/uem-blockchain-ua13/crypto-config"
+        },
+        "credentialStore": {
+            "path": "/tmp",
+            "cryptoStore": {
+                "path": "/tmp"
+            }
+        },
+        "BCCSP": {
+            "security": {
+                "enabled": true,
+                "default": {
+                    "provider": "SW"
+                },
+                "hashAlgorithm": "SHA2",
+                "softVerify": true,
+                "level": 256
+            }
+        },
+        "tlsCerts": {
+            "systemCertPool": true,
+            "client": {
+                "key": {
+                    "path": "/Users/mtng/git/uem-blockchain-ua13/crypto-config/peerOrganizations/org1.uem.com/users/Admin@org1.uem.com/tls/client.key"
+                },
+                "cert": {
+                    "path": "/Users/mtng/git/uem-blockchain-ua13/crypto-config/peerOrganizations/org1.uem.com/users/Admin@org1.uem.com/tls/client.crt"
+                }
+            }
+        }
+    },
+    "channels": {
+        "channel1": {
+            "peers": {
+                "peer0.org1.uem.com": {
+                    "endorsingPeer": true,
+                    "chaincodeQuery": true,
+                    "ledgerQuery": true,
+                    "eventSource": true
+                }
+
+            },
+            "policies": {
+                "queryChannelConfig": {
+                    "minResponses": 1,
+                    "maxTargets": 1,
+                    "retryOpts": {
+                        "attempts": 5,
+                        "initialBackoff": "500ms",
+                        "maxBackoff": "5s",
+                        "backoffFactor": 2.0
+                    }
+                }
+            }
+        }
+    },
+    "organizations": {
+        "org1": {
+            "mspid": "org1MSP",
+            "cryptoPath": "/Users/mtng/git/uem-blockchain-ua13/crypto-config/peerOrganizations/org1.uem.com/users/Admin@org1.uem.com/msp",
+            "peers": [
+                "peer0.org1.uem.com"
+            ],
+            "certificateAuthorities": [
+                "ca.org1.uem.com"
+            ]
+        },
+        "ordererorg": {
+            "mspID": "OrdererMSP",
+            "cryptoPath": "/Users/mtng/git/uem-blockchain-ua13/crypto-config/ordererOrganizations/uem.com/msp"
+        }
+    },
+
+    "orderers": {
+        "orderer0.uem.com": {
+            "url": "grpcs://localhost:7050",
+            "grpcOptions": {
+                "ssl-target-name-override": "orderer0.uem.com",
+                "keep-alive-time": "0s",
+                "keep-alive-timeout": "20s",
+                "keep-alive-permit": false,
+                "fail-fast": false,
+                "allow-insecure": false
+            },
+            "tlsCACerts": {
+                "path": "/Users/mtng/git/uem-blockchain-ua13/crypto-config/ordererOrganizations/uem.com/tlsca/tlsca.uem.com-cert.pem"
+            }
+        },
+        "orderer1.uem.com": {
+            "url": "grpcs://localhost:8050",
+            "grpcOptions": {
+                "ssl-target-name-override": "orderer1.uem.com",
+                "keep-alive-time": "0s",
+                "keep-alive-timeout": "20s",
+                "keep-alive-permit": false,
+                "fail-fast": false,
+                "allow-insecure": false
+            },
+            "tlsCACerts": {
+                "path": "/Users/mtng/git/uem-blockchain-ua13/crypto-config/ordererOrganizations/uem.com/tlsca/tlsca.uem.com-cert.pem"
+            }
+        }
+    },
+    "peers": {
+
+        "peer0.org1.uem.com": {
+            "url": "grpcs://localhost:7051",
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.org1.uem.com"
+            },
+            "tlsCACerts": {
+                "path": "/Users/mtng/git/uem-blockchain-ua13/crypto-config/peerOrganizations/org1.uem.com/peers/peer0.org1.uem.com/tls/ca.crt"
+            }
+        }
+
+    },
+    "peers2": {
+        "peer0.org2.uem.com": {
+            "url": "grpcs://localhost:8051",
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.org2.uem.com"
+            },
+            "tlsCACerts": {
+                "path": "/Users/mtng/git/uem-blockchain-ua13/crypto-config/peerOrganizations/org2.uem.com/peers/peer0.org2.uem.com/tls/ca.crt"
+            }
+        }
+    },
+
+    "certificateAuthorities": {
+        "ca.org1.uem.com": {
+            "url": "https://localhost:7054",
+            "tlsCACerts": {
+                "path": "/Users/mtng/git/uem-blockchain-ua13/crypto-config/peerOrganizations/org1.uem.com/ca/ca.org1.uem.com-cert.pem",
+                "client": {
+                    "key": {
+                        "path": "/Users/mtng/go1.10/src/github.com/coren-hf-dev/hyperledgerfabrictestnet/sdk-keys/MyKey.key"
+                    },
+                    "cert": {
+                        "path": "/Users/mtng/go1.10/src/github.com/coren-hf-dev/hyperledgerfabrictestnet/sdk-keys/MyCertificate.crt"
+                    }
+                }
+            },
+            "registrar": {
+                "enrollId": "adminCA",
+                "enrollSecret": "adminpw"
+            },
+            "caName": "ca.org1.uem.com"
+        }
+    }
+}

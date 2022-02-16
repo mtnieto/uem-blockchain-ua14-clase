@@ -1,0 +1,75 @@
+swagger: "2.0"
+info:
+  title: Marbles API
+  description: "Marbles API"
+  version: "1.0"
+schemes:
+  - http
+paths:
+  
+  /healthcheck/:
+    get:
+      summary: Check the current state of the API
+      responses:
+        "200":
+          description: Successful operation
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: The application is running
+  /marble/create:
+    x-swagger-router-controller: marble.controller
+    post:
+      summary: Creates a marble
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: MarbleCreate
+          description: The Smart Contract and method to call
+          schema:
+            $ref: "#/definitions/CreateMarble"
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GeneralResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  
+
+# complex objects have schema definitions
+definitions:
+  CreateMarble:
+    type: object
+    properties:
+      name:
+        type: string
+        example: marble1
+      color:
+        type: string
+        example: blue
+      size:
+        type: string
+        example: small
+      owner:
+        type: string
+        example: Joe
+  ErrorResponse:
+    type: object
+    properties:
+      message:
+        type: string
+        example: This is the error
+  GeneralResponse:
+    type: object
+    properties:
+      ouput:
+        type: object
+      
+  
+  
