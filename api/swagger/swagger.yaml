@@ -96,7 +96,7 @@ paths:
           name: MarbleDelete
           description: The marble
           schema:
-            $ref: "#/definitions/Delete"
+            $ref: "#/definitions/DeleteMarble"
       responses:
         "200":
           description: Success
